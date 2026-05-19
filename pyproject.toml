@@ -1,0 +1,26 @@
+[project]
+name = "shitsuji"
+version = "0.13.0"
+description = "Shitsuji Skill harness — emotion log skill for Codex"
+requires-python = ">=3.11"
+# The Skill harness is pure stdlib Python (hooks + scripts call no third-party
+# packages). Runtime deps intentionally empty.
+dependencies = []
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0",
+    "pytest-asyncio",
+    "ruff>=0.8",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+asyncio_mode = "auto"
+
+[tool.ruff]
+target-version = "py311"
+src = ["tests"]
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP"]

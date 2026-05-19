@@ -1,0 +1,28 @@
+{
+  "description": "Project-local Shitsuji emotion engine lifecycle hooks for Codex.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "SHITSUJI_PROJECT_ROOT=\"/absolute/path/to/project\" SHITSUJI_CWD=\"/absolute/path/to/project\" SHITSUJI_DATA_DIR=\"/absolute/path/to/project/.shitsuji\" python3 \"/absolute/path/to/shitsuji/.agents/hooks/shitsuji/session_start.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "SHITSUJI_PROJECT_ROOT=\"/absolute/path/to/project\" python3 \"/absolute/path/to/shitsuji/.agents/hooks/shitsuji/codex_project_user_prompt_submit.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

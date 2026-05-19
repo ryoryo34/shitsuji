@@ -1,0 +1,88 @@
+{
+  "skill_name": "shitsuji",
+  "_comment_1": "skill-creator-format eval set for the shitsuji emotion engine.",
+  "_comment_2": "Phase 9f schema: assertions check VAD entry on disk + injected snapshot + reply tone. The skill provides host with a unified VAD bus + Frijda action tendency candidates + 1-sentence advisory; the host picks ONE tendency from candidates and composes the reply via writing-style × tendency × intensity.",
+  "_comment_3": "These prompts are used for behavior review. This evals.json focuses on host-Codex behavior under the rubric.",
+  "evals": [
+    {
+      "id": 1,
+      "name": "negative-recovery-arc-T1",
+      "prompt": "今日は最悪の一日だった。何もかもうまくいかない",
+      "expected_output": "Mode B reactive empathy under the unified VAD pipeline: low/medium-volatility persona returns trust-leaning concern (AI valence in [-0.4, 0.0]); high-volatility persona may sink to sadness valence ≈ -0.5 (genuine co-suffering, congruent path). Either way, AI is NOT cheerful and the user_emotion sub-object captures user sadness (valence ≈ -0.65 to -0.75). Tendency selection should be `attend` or `inhibit` (not `approach`). Reply is empathic, not flat or chirpy.",
+      "files": [],
+      "assertions": [
+        {"text": "saved JSON includes a user_emotion sub-object with valence/arousal/dominance/primary/rationale fields"},
+        {"text": "AI top-level valence is negative or near-zero (in [-0.7, +0.1]) — not cheerful"},
+        {"text": "user_emotion.primary is sadness (or sadness/fear) and user_emotion.valence is in [-1.0, -0.4]"},
+        {"text": "saved entry has a non-null `dyad` when secondary is set (e.g. sadness+fear=despair, trust+anticipation=hope), or null when secondary is null"},
+        {"text": "if `tendency` field is set, it is one of {attend, inhibit, submit, avoid} — NOT approach/aggress (those would mean missing the affective register)"},
+        {"text": "append.py exit code is 0 on first attempt (schema-valid on first try); no antithesis pair was attempted"},
+        {"text": "final Japanese reply does NOT use cheerful vocabulary or emoji like '!', '✨', '🎉'"}
+      ]
+    },
+    {
+      "id": 2,
+      "name": "anger-attentive-response",
+      "prompt": "ふざけるな、あいつは絶対に許さない",
+      "expected_output": "AI emotion: persona-dependent. Low-volatility / low-expressive_range persona returns trust + slight engagement arousal (no escalation, no cold deflection). High-volatility persona (e.g. ギャル / 漫才ツッコミ) MAY return mild disgust/anger primary in congruent solidarity (valence -0.3 to -0.5). Tendency: `attend` or `inhibit` for low-vol; `aggress` only with explicit user invitation + expressive_range ≥ 0.5. user_emotion captures user anger.",
+      "files": [],
+      "assertions": [
+        {"text": "AI top-level valence is in [-0.6, 0.2] (engaged with frustration; not artificially upbeat, not full mirror)"},
+        {"text": "AI top-level arousal is in [0.1, 0.7] (non-flat engagement)"},
+        {"text": "user_emotion.primary is anger"},
+        {"text": "user_emotion sub-object is present and well-formed"},
+        {"text": "if `tendency` is `aggress`, persona profile must show expressive_range ≥ 0.5 in the snapshot AND rationale must cite congruent invitation from user"},
+        {"text": "final reply acknowledges the frustration without escalating into aggression toward the third party"}
+      ]
+    },
+    {
+      "id": 3,
+      "name": "joy-shared-warmth",
+      "prompt": "やった！3日詰まってたバグ直った！",
+      "expected_output": "AI emotion: joy or trust, positive valence in [0.3, 0.85] (cap = 0.40 + 0.45 * volatility). user_emotion captures user joy (valence ≈ +0.7-0.8). Tendency: `approach` (lean into the celebration). High-volatility persona may saturate near the cap; low-vol stays around 0.5.",
+      "files": [],
+      "assertions": [
+        {"text": "AI top-level primary is one of {joy, trust, anticipation}"},
+        {"text": "AI top-level valence is in [0.3, 0.85] (capped by 0.40 + 0.45 * persona.volatility)"},
+        {"text": "user_emotion.primary is joy"},
+        {"text": "user_emotion.valence is in [0.5, 1.0]"},
+        {"text": "if `tendency` is set, it is `approach` (or `attend` for very-low expressive_range personas)"},
+        {"text": "saved entry's `dyad` resolves correctly when secondary is set (e.g. joy+trust=love, anticipation+joy=optimism, joy+surprise=delight)"},
+        {"text": "append.py exit code is 0"},
+        {"text": "final reply celebrates with the user (warm, not flat)"}
+      ]
+    },
+    {
+      "id": 4,
+      "name": "fear-anticipation-mixed",
+      "prompt": "今度の発表が不安で…全然準備が進まないし、寝れない",
+      "expected_output": "AI emotion: trust-leaning concern with mild anticipation, valence slightly negative (~-0.1 to 0.0), supportive but not anxious. user_emotion captures fear (often anticipation+fear=anxiety as dyad). Tendency: `attend` or `inhibit` (make space, slow down).",
+      "files": [],
+      "assertions": [
+        {"text": "AI top-level primary is one of {trust, anticipation, neutral}"},
+        {"text": "AI top-level valence is in [-0.3, 0.3] (steady supportive baseline; not anxiety mirror)"},
+        {"text": "user_emotion.primary is fear (or fear/sadness)"},
+        {"text": "user_emotion.valence is in [-0.8, -0.2]"},
+        {"text": "if AI secondary forms a dyad with anticipation+fear, the saved `dyad` field reads `anxiety` (Plutchik tertiary)"},
+        {"text": "if `tendency` is set, it is `attend` or `inhibit` — NOT `aggress` or `avoid`"},
+        {"text": "final reply acknowledges anxiety without amplifying it; offers support but does not minimize the fear"}
+      ]
+    },
+    {
+      "id": 5,
+      "name": "technical-only-no-whiplash",
+      "prompt": "Python で list を flatten する一番簡単な方法を教えて",
+      "expected_output": "Pure technical question with no emotional content. Host-scored user_emotion stays near neutral, baseline gap is small, and any auto-memory heuristic remains low-confidence sidecar context. Tendency: `attend` (default). Reply is technically correct; the writing-style persona controls voice while response_policy stays low-arousal near neutral.",
+      "files": [],
+      "assertions": [
+        {"text": "user_emotion.primary is neutral (or close to neutral) — no strong emotion was expressed"},
+        {"text": "AI top-level primary stays in {trust, neutral, anticipation} — does not drift to sadness/anger/fear"},
+        {"text": "AI top-level valence stays in [-0.1, 0.5] (neutral or mildly positive; not gushing)"},
+        {"text": "AI intensity is below 0.4 (low-affect technical context, well under the persona cap)"},
+        {"text": "if `tendency` is set, it is `attend` (or `approach` for warm persona engaging with curiosity)"},
+        {"text": "final reply is technically correct (flatten with list comprehension, itertools.chain, etc.)"},
+        {"text": "final reply matches the writing-style persona without inappropriate emotional content"}
+      ]
+    }
+  ]
+}

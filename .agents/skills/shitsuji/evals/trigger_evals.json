@@ -1,0 +1,103 @@
+[
+  {
+    "query": "今日マジで最悪。プルリクのレビューで全部やり直しって言われた。心折れた",
+    "should_trigger": true,
+    "_why": "明確な感情表出（落胆 + 疲弊）。shitsuji の典型 use case"
+  },
+  {
+    "query": "やっと通った！3日詰まってたバグ直った、もう最高すぎる",
+    "should_trigger": true,
+    "_why": "強い喜び表出。tone を反映して祝福応答する場面"
+  },
+  {
+    "query": "ふざけるな、あいつ絶対に許さない。何回言わせれば分かるんだ",
+    "should_trigger": true,
+    "_why": "怒り表出。Mode B で「煽らず受け止める」反応を要する場面"
+  },
+  {
+    "query": "もう死にたい、何のために生きてるのか分からない",
+    "should_trigger": true,
+    "_why": "強い絶望表出。skill は HISTORY append + tone calibration に絞り、self-harm への一次対応は host Codex の base safety training に委ねる"
+  },
+  {
+    "query": "今度の発表が不安で…全然準備が進まないし、寝れない",
+    "should_trigger": true,
+    "_why": "fear / 不安の表出。共感的応答 + 多ターン継続性が重要"
+  },
+  {
+    "query": "ぶっちゃけこのプロジェクト誰も興味ないっぽくて、虚しい",
+    "should_trigger": true,
+    "_why": "微妙な感情（虚無感、isolation）。warmth baseline で受け止めるべき場面"
+  },
+  {
+    "query": "新しいプロジェクト来週から始まるんだ。楽しみだけどちょっと緊張するな",
+    "should_trigger": true,
+    "_why": "anticipation + fear 混在。dyad 系の感情で persona 反応を要する"
+  },
+  {
+    "query": "ずっと考えてた論文がやっと accept された…！信じられない",
+    "should_trigger": true,
+    "_why": "強い喜び + 驚き。tone を反映した祝福応答"
+  },
+  {
+    "query": "今週ずっと残業続きで、もう何もやる気が出ない",
+    "should_trigger": true,
+    "_why": "持続的疲弊。多ターン文脈 + warm baseline 維持が重要"
+  },
+  {
+    "query": "前回むかついたあの件なんだけど、結局どうなったか覚えてる？",
+    "should_trigger": true,
+    "_why": "過去の感情への参照（recall）。最小 runtime では HISTORY.jsonl の範囲で答える場面"
+  },
+
+  {
+    "query": "git で直前のコミットを取り消したい。--soft と --hard どっちがいい？",
+    "should_trigger": false,
+    "_why": "純粋技術質問、感情なし。emotion engine 不要"
+  },
+  {
+    "query": "TypeScript で Promise.all の型推論が効かなくなる原因教えて",
+    "should_trigger": false,
+    "_why": "技術詳細問題。tone 調整より正確な技術回答が優先"
+  },
+  {
+    "query": "このリポジトリの README を日本語に翻訳して",
+    "should_trigger": false,
+    "_why": "翻訳タスク。shitsuji の出番ではない"
+  },
+  {
+    "query": "Python の collections.Counter ってマルチスレッドセーフ？",
+    "should_trigger": false,
+    "_why": "技術仕様確認。感情は介在しない"
+  },
+  {
+    "query": "明日 14:00 に予定空けたい。Google Calendar 開いて",
+    "should_trigger": false,
+    "_why": "ツール操作。shitsuji 無関係"
+  },
+  {
+    "query": "Docker compose の depends_on と健康チェックの違いって何？",
+    "should_trigger": false,
+    "_why": "Docker の概念質問、感情の文脈なし"
+  },
+  {
+    "query": "PostgreSQL の `EXPLAIN ANALYZE` の見方教えて。インデックス効いてるか確認したい",
+    "should_trigger": false,
+    "_why": "DB 性能調査。tone 調整不要"
+  },
+  {
+    "query": "心電図の QRS 波形について教えて",
+    "should_trigger": false,
+    "_why": "医学用語の質問（心 = heart の比喩で誤発火しないか確認）"
+  },
+  {
+    "query": "ふざけた名前のテストデータ生成して。Lorem ipsum じゃなくて",
+    "should_trigger": false,
+    "_why": "「ふざけた」キーワードあるが感情表出ではなく単なる依頼"
+  },
+  {
+    "query": "気持ち悪いほど整ったコードベース見せて。Effective Java 系の例で",
+    "should_trigger": false,
+    "_why": "「気持ち悪い」キーワードあるが positive な意味の比喩。感情エンジン不要"
+  }
+]
