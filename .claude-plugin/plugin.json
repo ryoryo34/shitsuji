@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-plugin-manifest.json",
+  "name": "shitsuji",
+  "displayName": "Shitsuji",
+  "version": "0.13.0",
+  "description": "Project-local emotion log Skill harness that records lightweight user-affect observations and injects compact response guidance for Claude Code.",
+  "author": {
+    "name": "ryoryo34"
+  },
+  "homepage": "https://github.com/ryoryo34/shitsuji",
+  "repository": "https://github.com/ryoryo34/shitsuji",
+  "license": "MIT",
+  "keywords": [
+    "affect",
+    "emotion",
+    "hooks",
+    "memory",
+    "persona"
+  ],
+  "skills": "./.agents/skills/"
+}
