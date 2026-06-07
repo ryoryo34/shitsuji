@@ -71,7 +71,7 @@ skill and hook files:
 |---|---|
 | Manifest | `.claude-plugin/plugin.json` |
 | Skill directory | `.agents/skills/` |
-| Claude hook config | `.agents/hooks/shitsuji/claude_hooks.json` |
+| Claude hook config | `hooks/hooks.json` |
 
 The Claude hook config uses `${CLAUDE_PROJECT_DIR}` for project-local runtime
 state and writes normal Shitsuji files under:

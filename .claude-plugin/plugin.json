@@ -17,6 +17,5 @@
     "memory",
     "persona"
   ],
-  "skills": "./.agents/skills/",
-  "hooks": "./.agents/hooks/shitsuji/claude_hooks.json"
+  "skills": "./.agents/skills/"
 }
