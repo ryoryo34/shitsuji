@@ -1,0 +1,28 @@
+{
+  "description": "Project-local Shitsuji emotion engine lifecycle hooks for Claude Code.",
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "startup|resume",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "SHITSUJI_PROJECT_ROOT=\"${CLAUDE_PROJECT_DIR}\" SHITSUJI_CWD=\"${CLAUDE_PROJECT_DIR}\" SHITSUJI_DATA_DIR=\"${CLAUDE_PROJECT_DIR}/.shitsuji\" python3 \"${CLAUDE_PLUGIN_ROOT}/.agents/hooks/shitsuji/session_start.py\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "UserPromptSubmit": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "SHITSUJI_PROJECT_ROOT=\"${CLAUDE_PROJECT_DIR}\" SHITSUJI_DATA_DIR=\"${CLAUDE_PROJECT_DIR}/.shitsuji\" python3 \"${CLAUDE_PLUGIN_ROOT}/.agents/hooks/shitsuji/user_prompt_submit.py\"",
+            "timeout": 10
+          }
+        ]
+      }
+    ]
+  }
+}

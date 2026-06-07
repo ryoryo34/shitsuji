@@ -56,6 +56,47 @@ Normal runtime state lives under `.shitsuji/`. The two primary files are:
 
 ## Quick Start
 
+Shitsuji can run in two host modes:
+
+- Codex project hooks, using the setup flow below.
+- Claude Code plugin loading, using `.claude-plugin/plugin.json`.
+
+### Claude Code plugin
+
+This repository is also a Claude Code plugin root. The Claude manifest lives at
+`.claude-plugin/plugin.json` and points Claude Code to the existing Shitsuji
+skill and hook files:
+
+| Component | Path |
+|---|---|
+| Manifest | `.claude-plugin/plugin.json` |
+| Skill directory | `.agents/skills/` |
+| Claude hook config | `.agents/hooks/shitsuji/claude_hooks.json` |
+
+The Claude hook config uses `${CLAUDE_PROJECT_DIR}` for project-local runtime
+state and writes normal Shitsuji files under:
+
+```text
+<project>/.shitsuji/HISTORY.jsonl
+<project>/.shitsuji/PERSONA_PROFILE.json
+```
+
+This plugin does not need to live under `.claude/`. In Claude Code,
+`.claude-plugin/plugin.json` is the plugin manifest location, while `.claude/`
+is used for project/user/local settings and standalone project configuration.
+If the plugin is installed with project scope, Claude Code records that enabled
+plugin setting in `.claude/settings.json`; the plugin files themselves remain
+in the plugin root.
+
+After installing or enabling the plugin in Claude Code, validate the checkout
+from the repository root:
+
+```bash
+claude plugin validate .
+```
+
+### Codex project setup
+
 Requirements:
 
 - Codex with hook support enabled.
